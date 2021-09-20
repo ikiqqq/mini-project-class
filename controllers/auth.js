@@ -43,7 +43,7 @@ module.exports = {
                 username : body.username,
                 password : hashedPassword
             }
-                )
+                );
                 
                 const payload = {
                     username : admin.dataValues.username,
@@ -66,7 +66,6 @@ module.exports = {
             })
         }
     },
-
     login : async (req,res) => {
         const body = req.body
         try{
@@ -193,7 +192,12 @@ module.exports = {
                     errors: error["details"][0]["message"]
                 })
             }
-            const updatedAdmins = await admins.update({...body}, {where : {
+            const hashedPassword = await bcrypt.hash(body.password, 10);
+
+            const updatedAdmins = await admins.update({
+                username : body.username,
+                password : hashedPassword
+            }, {where : {
                 id : req.params.id
             }});
 
